@@ -1,0 +1,65 @@
+.box{
+    width: 200px;
+    height: 200px;
+    margin: 100px auto;
+    position: relative;
+}
+.box .mask{
+    width: 100px;
+    height: 200px;
+    background: white;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    z-index: 1;
+}
+.box .layer{
+    width: 160px;
+    height: 160px;
+    background: white;
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 160px;
+    z-index: 3;
+}
+.box .left, .box .right{
+    width: 200px;
+    height: 200px;
+    position: absolute;
+    transform-origin: 100px 100px;
+    border-radius: 50%;
+    box-sizing: border-box;
+}
+.box .left{
+    left: 0px;
+    top: 0px;
+}
+.box .right{
+    left: 0px;
+    right: 0px;
+    z-index: 2;
+    display: none;
+}
+.box .circle{
+    width: 100px;
+    height: 200px;
+    box-sizing: border-box;
+    position: relative;
+    background: red;
+}
+.box .left .circle{
+    border-radius: 100px 0 0 100px;
+}
+.box .right .circle{
+    border-radius: 0 100px 100px 0;
+    left: 100px;
+}
+#prog_box{
+    width: 200px;
+    height: 30px;
+    margin: 10px auto;
+    display: block;
+}
