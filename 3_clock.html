@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+        .box{
+            width: 630px;
+            height: 210px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 50px auto;
+        }
+        .circle_wrapper{
+            width: 200px;
+            height: 200px;
+            margin: 50px auto;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .wrapper{
+            width: 100px;
+            height: 200px;
+            position: absolute;
+            top: 0;
+            overflow: hidden;
+        }
+        .right{
+            right: 0;
+        }
+        .left{
+            left: 0;
+        }
+        .circleProgress{
+            width: 160px;
+            height: 160px;
+            border: 20px solid transparent;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            transform: rotate(-135deg);
+        }
+        .rightCircle{
+            border-top: 20px solid transparent;
+            border-right: 20px solid transparent;
+            right: 0;
+        }
+        .leftCircle{
+            border-left: 20px solid transparent;
+            border-bottom: 20px solid transparent;
+            left: 0;
+        }
+        .prop_num{
+            font-size: 3.5em;
+            font-weight: bold;
+            color: #292421;
+            text-shadow: 3px 3px 3px #808069;
+        }
+        .b-t-c-red{
+            border-top-color: red; 
+        }
+        .b-r-c-red{
+            border-right-color: red;
+        }
+        .b-b-c-red{
+            border-bottom-color: red;
+        }
+        .b-l-c-red{
+            border-left-color: red;
+        }
+        .b-t-c-green{
+            border-top-color: green; 
+        }
+        .b-r-c-green{
+            border-right-color: green;
+        }
+        .b-b-c-green{
+            border-bottom-color: green;
+        }
+        .b-l-c-green{
+            border-left-color: green;
+        }
+        .b-t-c-orange{
+            border-top-color: orange; 
+        }
+        .b-r-c-orange{
+            border-right-color: orange;
+        }
+        .b-b-c-orange{
+            border-bottom-color: orange;
+        }
+        .b-l-c-orange{
+            border-left-color: orange;
+        }
+	</style>
+</head>
+<body>
+    <div class="box">
+        <div class="circle_wrapper hour">
+            <span class="prop_num"></span>
+            <div class="wrapper right">
+                <div class="circleProgress rightCircle b-t-c-orange b-r-c-orange"></div>
+            </div>
+            <div class="wrapper left">
+                <div class="circleProgress leftCircle b-l-c-orange b-b-c-orange"></div>
+            </div>
+        </div>
+
+        <div class="circle_wrapper minute">
+            <span class="prop_num"></span>
+            <div class="wrapper right">
+                <div class="circleProgress rightCircle b-t-c-red b-r-c-red"></div>
+            </div>
+            <div class="wrapper left">
+                <div class="circleProgress leftCircle b-l-c-red b-b-c-red"></div>
+            </div>
+        </div>
+
+        <div class="circle_wrapper second">
+            <span class="prop_num"></span>
+            <div class="wrapper right">
+                <div class="circleProgress rightCircle b-t-c-green b-r-c-green"></div>
+            </div>
+            <div class="wrapper left">
+                <div class="circleProgress leftCircle b-l-c-green b-b-c-green"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function(){
+            var PropClock = {
+                l_deg: 0,
+                r_deg: 0,
+                prop: 0,
+                showProp: function(selector){
+                    var left_div = document.querySelector(selector + ' .leftCircle');
+                    var right_div = document.querySelector(selector + ' .rightCircle');
+                    var prop_num = document.querySelector(selector + ' .prop_num');
+
+                    left_div.style.transform = 'rotate('+this.l_deg+'deg)';
+                    right_div.style.transform = 'rotate('+this.r_deg+'deg)';
+
+                    prop_num.innerText = this.prop < 10 ? '0' + this.prop.toString() : this.prop.toString();
+
+                    return this;
+                },
+                angle: function(propotaion, full_percent) {
+                    var propotaion = propotaion || 0;
+                    propotaion = propotaion > 100 ? 100 : propotaion;
+                    propotaion = propotaion < 0 ? 0 : propotaion;
+                    propotaion = propotaion == 0 ? full_percent : propotaion;
+
+                    var full_percent = full_percent || 100;
+                    full_percent = full_percent < 0 ? 100 : full_percent;
+
+                    var half = full_percent / 2;
+                    this.prop = propotaion;
+                    this.l_deg = propotaion > half ? (360 / full_percent).toFixed(2) * ( propotaion - half) - 135 : -135;
+                    this.r_deg = propotaion > half ? 45 : (360 / full_percent).toFixed(2) * propotaion - 135;
+                    
+                    return this;
+                },
+                render: function() {
+                    var systime = new Date();
+                    var h = systime.getHours(),
+                        m = systime.getMinutes(),
+                        s = systime.getSeconds();
+                    // 处理小时
+                    this.angle(h, 24).showProp('.hour');
+                    // // 处理分钟
+                    this.angle(m, 60).showProp('.minute');
+                    // // 处理秒
+                    this.angle(s, 60).showProp('.second');
+                }
+            };
+
+            setInterval(function(){PropClock.render()}, 1000);
+        })()
+    </script>
+</body>
+</html>
